@@ -35,7 +35,29 @@ public class services {
                     mapToLong(flightInfo -> flightInfo.
                             getDuration().
                             toSeconds()).
-                    sum());
+                    sum())/3600;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+        return 0.0;
+    }
+
+    public static double averageOfFlightHours(String airline){
+        try {
+            List<FlightDTO> flightList = getFlightsFromFile("flights.json").stream().
+                    filter(flight -> flight != null).
+                    filter(flight -> flight.getAirline().getName() != null).
+                    filter(flight -> flight.getAirline().
+                            getName().
+                            equals(airline)).
+                    toList();
+            return (getFlightInfoDetails(flightList).stream().
+                    mapToLong(flightInfo -> flightInfo.
+                            getDuration().
+                            toSeconds()).
+                    average().orElse(0.0)/3600);
 
         } catch (IOException e) {
             e.printStackTrace();
