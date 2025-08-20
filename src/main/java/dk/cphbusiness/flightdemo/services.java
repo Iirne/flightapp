@@ -82,4 +82,14 @@ public class services {
         }
         return new ArrayList<FlightDTO>();
     }
+
+    public static List<FlightDTO> sortedByArrival(){
+        try {
+            return getFlightsFromFile("flights.json").stream().
+                    sorted((a, b) -> a.getArrival().getScheduled().compareTo(b.getArrival().getScheduled())).toList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<FlightDTO>();
+    }
 }
