@@ -19,6 +19,7 @@ import java.util.*;
 public class FlightReader {
 
     public static void main(String[] args) {
+        /* get everything and print all
         try {
             List<FlightDTO> flightList = getFlightsFromFile("flights.json");
             List<FlightInfoDTO> flightInfoDTOList = getFlightInfoDetails(flightList);
@@ -26,6 +27,25 @@ public class FlightReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
+        try {
+            List<FlightDTO> flightList = getFlightsFromFile("flights.json").stream().
+                    filter(flight -> flight != null).
+                    filter(flight -> flight.getAirline().getName() != null).
+                    filter(flight -> flight.getAirline().
+                            getName().
+                            equals("Lufthansa")).
+                    toList();
+            Double duration = ((double)getFlightInfoDetails(flightList).stream().
+                    mapToLong(flightInfo -> flightInfo.
+                            getDuration().
+                            toSeconds()).
+                    sum())/3600;
+            System.out.println(duration);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static List<FlightDTO> getFlightsFromFile(String filename) throws IOException {
