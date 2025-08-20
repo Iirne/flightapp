@@ -20,7 +20,7 @@ public class FlightReader {
 
     public static void main(String[] args) {
         System.out.println(services.sumOfFlightHours("Lufthansa"));
-
+        services.flightsBetweenTwoAirports("Queen Alia International","King Hussein International").forEach(System.out::println);
 
     }
 

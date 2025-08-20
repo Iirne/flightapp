@@ -4,6 +4,7 @@ import dk.cphbusiness.flightdemo.dtos.FlightDTO;
 import dk.cphbusiness.flightdemo.dtos.FlightInfoDTO;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static dk.cphbusiness.flightdemo.FlightReader.getFlightInfoDetails;
@@ -64,5 +65,21 @@ public class services {
 
         }
         return 0.0;
+    }
+
+    public static List<FlightDTO> flightsBetweenTwoAirports(String airport1, String airport2){
+        try {
+            return getFlightsFromFile("flights.json").stream().
+                    filter(flight -> flight.getDeparture() != null).
+                    filter(flight -> flight.getArrival() != null).
+                    filter(flight -> flight.getDeparture().getAirport() != null).
+                    filter(flight -> flight.getArrival().getAirport() != null).
+                    filter(flight -> flight.getDeparture().getAirport().contains(airport1) || flight.getArrival().getAirport().equals(airport1)).
+                    filter(flight -> flight.getDeparture().getAirport().contains(airport2) || flight.getArrival().getAirport().equals(airport2)).
+                    toList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<FlightDTO>();
     }
 }
