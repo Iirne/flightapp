@@ -1,5 +1,6 @@
 package dk.cphbusiness.flightdemo;
 
+import dk.cphbusiness.flightdemo.dtos.AirlineDTO;
 import dk.cphbusiness.flightdemo.dtos.FlightDTO;
 import dk.cphbusiness.flightdemo.dtos.FlightInfoDTO;
 
@@ -7,7 +8,9 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static dk.cphbusiness.flightdemo.FlightReader.getFlightInfoDetails;
 import static dk.cphbusiness.flightdemo.FlightReader.getFlightsFromFile;
@@ -68,6 +71,22 @@ public class services {
         }
         return 0.0;
     }
+
+    //SLOOOWWWW
+    public static Map<AirlineDTO, Double> averageFlightHoursAll(){
+        HashMap<AirlineDTO,Double> map = new HashMap<AirlineDTO, Double>();
+        try {
+
+            getFlightsFromFile("flights.json").stream().
+                    filter(flightDTO -> flightDTO.getAirline().getName() != null).
+                    map(flightDTO -> flightDTO.getAirline()).distinct().
+                    forEach(airlineDTO -> map.put(airlineDTO,services.averageOfFlightHours(airlineDTO.getName())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
 
     public static List<FlightDTO> flightsBetweenTwoAirports(String airport1, String airport2){
         try {

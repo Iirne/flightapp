@@ -1,6 +1,7 @@
 package dk.cphbusiness.flightdemo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dk.cphbusiness.flightdemo.dtos.AirlineDTO;
 import dk.cphbusiness.flightdemo.dtos.FlightDTO;
 import dk.cphbusiness.flightdemo.dtos.FlightInfoDTO;
 import dk.cphbusiness.utils.Utils;
@@ -19,7 +20,10 @@ import java.util.*;
 public class FlightReader {
 
     public static void main(String[] args) {
-        getFlightInfoDetails(services.sortedByDuration()).forEach(flightInfoDTO -> System.out.println(flightInfoDTO.getDuration()));
+
+        for (Map.Entry<AirlineDTO, Double> entry :services.averageFlightHoursAll().entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+        }
     }
 
     public static List<FlightDTO> getFlightsFromFile(String filename) throws IOException {
