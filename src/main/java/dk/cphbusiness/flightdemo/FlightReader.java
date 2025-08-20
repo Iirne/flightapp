@@ -19,8 +19,7 @@ import java.util.*;
 public class FlightReader {
 
     public static void main(String[] args) {
-        services.sortedByArrival().forEach(System.out::println);
-
+        getFlightInfoDetails(services.sortedByDuration()).forEach(flightInfoDTO -> System.out.println(flightInfoDTO.getDuration()));
     }
 
     public static List<FlightDTO> getFlightsFromFile(String filename) throws IOException {

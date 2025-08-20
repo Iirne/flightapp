@@ -4,6 +4,8 @@ import dk.cphbusiness.flightdemo.dtos.FlightDTO;
 import dk.cphbusiness.flightdemo.dtos.FlightInfoDTO;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +90,18 @@ public class services {
             return getFlightsFromFile("flights.json").stream().
                     filter(flight -> flight.getArrival().getScheduled() != null).
                     sorted((a, b) -> a.getArrival().getScheduled().compareTo(b.getArrival().getScheduled())).toList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<FlightDTO>();
+    }
+
+    public static List<FlightDTO> sortedByDuration(){
+        try {
+            return getFlightsFromFile("flights.json").stream().
+                    filter(flight -> flight.getArrival().getScheduled() != null).
+                    filter(flight -> flight.getDeparture().getScheduled() != null).
+                    sorted((a, b) -> Duration.between(a.getArrival().getScheduled(), a.getDeparture().getScheduled()).compareTo(Duration.between(b.getArrival().getScheduled(), b.getDeparture().getScheduled()))).toList();
         } catch (IOException e) {
             e.printStackTrace();
         }
