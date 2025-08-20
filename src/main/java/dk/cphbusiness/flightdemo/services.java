@@ -6,6 +6,7 @@ import dk.cphbusiness.flightdemo.dtos.FlightInfoDTO;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,6 +119,17 @@ public class services {
                     filter(flight -> flight.getArrival().getScheduled() != null).
                     filter(flight -> flight.getDeparture().getScheduled() != null).
                     sorted((a, b) -> Duration.between(a.getArrival().getScheduled(), a.getDeparture().getScheduled()).compareTo(Duration.between(b.getArrival().getScheduled(), b.getDeparture().getScheduled()))).toList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public static List<FlightDTO> flightsBefore(LocalDateTime time){
+        try {
+            return getFlightsFromFile("flights.json").stream().
+                    filter(flight -> flight.getDeparture().getScheduled() != null).
+                    filter(flightDTO -> flightDTO.getDeparture().getScheduled().isBefore(time)).toList();
         } catch (IOException e) {
             e.printStackTrace();
         }
