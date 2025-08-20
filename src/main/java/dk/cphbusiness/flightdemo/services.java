@@ -6,7 +6,6 @@ import dk.cphbusiness.flightdemo.dtos.FlightInfoDTO;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,6 @@ public class services {
     public static double sumOfFlightHours(String airline){
         try {
             List<FlightDTO> flightList = getFlightsFromFile("flights.json").stream().
-                    filter(flight -> flight != null).
                     filter(flight -> flight.getAirline().getName() != null).
                     filter(flight -> flight.getAirline().
                             getName().
@@ -53,7 +51,6 @@ public class services {
     public static double averageOfFlightHours(String airline){
         try {
             List<FlightDTO> flightList = getFlightsFromFile("flights.json").stream().
-                    filter(flight -> flight != null).
                     filter(flight -> flight.getAirline().getName() != null).
                     filter(flight -> flight.getAirline().
                             getName().
@@ -74,12 +71,12 @@ public class services {
 
     //SLOOOWWWW
     public static Map<AirlineDTO, Double> averageFlightHoursAll(){
-        HashMap<AirlineDTO,Double> map = new HashMap<AirlineDTO, Double>();
+        HashMap<AirlineDTO,Double> map = new HashMap<>();
         try {
 
             getFlightsFromFile("flights.json").stream().
-                    filter(flightDTO -> flightDTO.getAirline().getName() != null).
-                    map(flightDTO -> flightDTO.getAirline()).distinct().
+                    map(FlightDTO::getAirline).distinct().
+                    filter(flightDTO -> flightDTO.getName() != null).
                     forEach(airlineDTO -> map.put(airlineDTO,services.averageOfFlightHours(airlineDTO.getName())));
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,7 +98,7 @@ public class services {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<FlightDTO>();
+        return new ArrayList<>();
     }
 
     public static List<FlightDTO> sortedByArrival(){
@@ -112,7 +109,7 @@ public class services {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<FlightDTO>();
+        return new ArrayList<>();
     }
 
     public static List<FlightDTO> sortedByDuration(){
@@ -124,6 +121,6 @@ public class services {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<FlightDTO>();
+        return new ArrayList<>();
     }
 }
