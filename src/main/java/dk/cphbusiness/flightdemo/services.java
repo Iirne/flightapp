@@ -86,6 +86,7 @@ public class services {
     public static List<FlightDTO> sortedByArrival(){
         try {
             return getFlightsFromFile("flights.json").stream().
+                    filter(flight -> flight.getArrival().getScheduled() != null).
                     sorted((a, b) -> a.getArrival().getScheduled().compareTo(b.getArrival().getScheduled())).toList();
         } catch (IOException e) {
             e.printStackTrace();
